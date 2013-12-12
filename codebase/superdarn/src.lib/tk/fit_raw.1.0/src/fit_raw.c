@@ -13,6 +13,7 @@
 #include "rawdata.h"
 #include "fitdata.h"
 #include "fitblk.h"
+#include "fit_acf.h"
 #include "fitacfversion.h"
 
 #define GOOSEBAY 1
@@ -141,7 +142,17 @@ int fit_raw(struct RadarParm *prm, struct RawData *raw,
             struct FitBlock *fblk, struct FitData *fit){
 
     int goose;
+    int lag_lim = 5;
+    struct FitACFBadSample badsmp;
+    int *badlag=NULL;
+    int i=0,k;
+    double *pwrd=NULL,*pwrt=NULL;
+    double mnpwr, skylog, freq_to_vel, range;
+    double xomega=0.0;
+    double noise_pwr=0.0; 
+    int ni;
 
+    /*set up the fblk object, initialze range gates*/
     setup_fblk(prm, raw, fblk);
     FitSetRng(fit,fblk->prm.nrang);
     if(fblk->prm.xcf){
@@ -151,21 +162,8 @@ int fit_raw(struct RadarParm *prm, struct RawData *raw,
   
     /*goose bay has intereferometer in front of main array*/
     goose=(prm->stid==GOOSEBAY);
-    int lag_lim = 5;
 
-    
-    struct FitACFBadSample badsmp;
-    int *badlag=NULL;
-
-    int i=0,k;
-
-    double *pwrd=NULL,*pwrt=NULL;
-    double mnpwr, skylog, freq_to_vel, range;
-    double xomega=0.0;
-
-    double noise_pwr=0.0; 
-    int ni;
-
+    /*initialize noise levels*/
     fit.noise->skynoise=0.0;
     fit.noise->lag0=0.0;
     fit.noise->vel=0.0;
@@ -178,12 +176,12 @@ int fit_raw(struct RadarParm *prm, struct RawData *raw,
     if (badlag==NULL) return -1;
 
     pwrd=malloc(sizeof(double)*fblk->prm.nrang);
-    if (pwrd==NULL) {
+    if (pwrd==NULL){
         free(badlag);
         return -1;
     }
     pwrt=malloc(sizeof(double)*fblk->prm.nrang);
-    if (pwrt==NULL) {
+    if (pwrt==NULL){
         free(badlag);
         free(pwrd);
         return -1;
@@ -198,7 +196,7 @@ int fit_raw(struct RadarParm *prm, struct RawData *raw,
     fluctuations of the acfs which are pure noise) */
 
     for(i=0; i < fblk->prm.nrang; i++){
-        pwrd[i] = (double) fblk->prm.pwr0[i]; 
+        pwrd[i] = (double)fblk->prm.pwr0[i]; 
         /* transfer powers into local array */
         pwrt[i] = pwrd[i];
     }
@@ -224,7 +222,7 @@ int fit_raw(struct RadarParm *prm, struct RawData *raw,
     ni = (ni > 0) ? ni :  1;
     mnpwr = mnpwr/ni;
     if (mnpwr < 1.0) mnpwr = fblk->prm.noise;
-    &fit->noise->skynoise = mnpwr;
+    fit.noise->skynoise = mnpwr;
 
     /* Now determine the level which will be used as the cut-off power 
         for fit_acf.  This is the average power at all non-zero lags of all
@@ -233,7 +231,7 @@ int fit_raw(struct RadarParm *prm, struct RawData *raw,
 
     noise_pwr = noise_stat(mnpwr,&fblk->prm,&badsmp,fblk->acfd); 
 
-    /*    convert the lag0 powers to dB */
+    /* convert the lag0 powers to dB */
 
     if(&fit->noise->skynoise > 0.0) skylog = 10.0 * log10(&fit->noise->skynoise);
     else skylog = 0.0;
@@ -359,9 +357,6 @@ int fit_raw(struct RadarParm *prm, struct RawData *raw,
             if ((fit->rng[k].w_s !=0.0) && (fit->rng[k].w_s_err != HUGE_VAL))  
                 fit->rng[k].w_s_err = 0.5*fit->rng[k].w_s_err/fabs(fit->rng[k].w_s);
             else fit->rng[k].w_s_err=HUGE_VAL;
-
-
-
 
             fit->rng[k].w_s = 3.33*freq_to_vel*fit->rng[k].w_s;
             fit->rng[k].w_s_err = (fit->rng[k].w_s_err == HUGE_VAL) ?
