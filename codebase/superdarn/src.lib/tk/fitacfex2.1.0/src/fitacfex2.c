@@ -275,7 +275,7 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
   }
 
   prm->noise.mean = skynoise;
-
+  
   if(print)
   {
     fprintf(stdout,"%d  %d  %lf  %d  %lf  %d  %lf\n",prm->nrang,prm->mplgs,skynoise,prm->tfreq,prm->mpinc*1.e-6,nslopes,diff);
@@ -317,7 +317,7 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
     availcnt = 0;
 
     lag0pwr  = 10.0*log10((raw->acfd[0][R*prm->mplgs])/skynoise);
-
+    
     if(print)
       fprintf(stdout,"%d  %lf\n",R,raw->acfd[0][R*prm->mplgs]/sqrt(1.0*prm->nave));
 
@@ -326,7 +326,7 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
 
     prm->mplgexs = 0;
-
+    
     if((fabs(prm->cp) == 210 || fabs(prm->cp) == 230 || fabs(prm->cp) == 502 || fabs(prm->cp) == 503 || fabs(prm->cp) == 3310) && prm->mplgs == 18)
     {
       for (L=0;L<prm->mplgs;L++)
@@ -377,10 +377,23 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
       FitACFCkRng(R+1,badlag,&badsmp,&fblk->prm);
       for (L=0;L<prm->mplgs;L++)
       {
+        if(prm->lag[0][L] < 0)
+        {
+            fprintf(stderr,"fitacfex2:  WARNING: prm->lag[0][L] is %d.  Using 0 instead.\n",prm->lag[0][L]);
+            prm->lag[0][L]=0;
+        }
+        if(prm->lag[1][L] < 0)
+        {
+            fprintf(stderr,"fitacfex2:  WARNING: prm->lag[1][L] is %d.  Using 0 instead.\n",prm->lag[1][L]);
+            prm->lag[1][L]=0;
+        }
         lag = abs(prm->lag[0][L] - prm->lag[1][L]);
+	/* Here we've introduced a limitation that the maximum difference between prm->lag's is 100 */
+	if(lag >= 100) continue;
+	/* If the lag is greater than or equal 100, then it will cause the next line to fault */
         if(lag_flg[lag] != -1) continue;
         lag_flg[lag] = 0;
-        re  = raw->acfd[0][R*prm->mplgs+L]; 
+        re  = raw->acfd[0][R*prm->mplgs+L];
         im  = raw->acfd[1][R*prm->mplgs+L];
         lagpwr[lag] = sqrt(re*re + im*im);
         availflg = 0;
