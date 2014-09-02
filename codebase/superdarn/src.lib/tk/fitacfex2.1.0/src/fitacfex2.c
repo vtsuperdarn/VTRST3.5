@@ -382,15 +382,18 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
             fprintf(stderr,"fitacfex2:  WARNING: prm->lag[0][L] is %d.  Using 0 instead.\n",prm->lag[0][L]);
             prm->lag[0][L]=0;
         }
-        if(prm->lag[1][L] < 0) 
+        if(prm->lag[1][L] < 0)
         {
             fprintf(stderr,"fitacfex2:  WARNING: prm->lag[1][L] is %d.  Using 0 instead.\n",prm->lag[1][L]);
             prm->lag[1][L]=0;
         }
         lag = abs(prm->lag[0][L] - prm->lag[1][L]);
+	/* Here we've introduced a limitation that the maximum difference between prm->lag's is 100 */
+	if(lag >= 100) continue;
+	/* If the lag is greater than or equal 100, then it will cause the next line to fault */
         if(lag_flg[lag] != -1) continue;
         lag_flg[lag] = 0;
-        re  = raw->acfd[0][R*prm->mplgs+L]; 
+        re  = raw->acfd[0][R*prm->mplgs+L];
         im  = raw->acfd[1][R*prm->mplgs+L];
         lagpwr[lag] = sqrt(re*re + im*im);
         availflg = 0;
