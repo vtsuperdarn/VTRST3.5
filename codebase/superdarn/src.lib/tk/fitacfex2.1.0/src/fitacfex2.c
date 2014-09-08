@@ -211,6 +211,7 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
   struct FitACFBadSample badsmp;
   float *sigma = malloc(prm->mplgs*sizeof(double));
 
+
   /* need this for bisection method */
   diff=(180.0/nslopes);
 
@@ -261,7 +262,7 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
 
   /*setup fitblock parameter*/
   setup_fblk(prm, raw, fblk);
- 
+
   FitSetRng(fit,fblk->prm.nrang);
   FitSetXrng(fit,fblk->prm.nrang);
   FitSetElv(fit,fblk->prm.nrang);
@@ -378,9 +379,12 @@ void fitacfex2(struct RadarParm *prm,struct RawData *raw,
       for (L=0;L<prm->mplgs;L++)
       {
         lag = abs(prm->lag[0][L] - prm->lag[1][L]);
+	/* Here we've introduced a limitation that the maximum difference between prm->lag's is 100 */
+	if(lag >= 100) continue;
+	/* If the lag is greater than or equal 100, then it will cause the next line to fault */
         if(lag_flg[lag] != -1) continue;
         lag_flg[lag] = 0;
-        re  = raw->acfd[0][R*prm->mplgs+L]; 
+        re  = raw->acfd[0][R*prm->mplgs+L];
         im  = raw->acfd[1][R*prm->mplgs+L];
         lagpwr[lag] = sqrt(re*re + im*im);
         availflg = 0;
