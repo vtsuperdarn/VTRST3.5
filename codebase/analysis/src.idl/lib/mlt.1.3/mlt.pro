@@ -29,7 +29,7 @@
 ;
 ; MLTConvertYMDHMS
 ; MLTConvertEpoch
-; MLTConvertYrSec
+; MLTConvertYrsec
 ;
 ; Private Functions:
 ; ------------------
@@ -207,7 +207,7 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;+
 ; NAME:
-;       MLTConvertYMDHMS
+;       MLTConvertYrsec
 ;
 ; PURPOSE:
 ;       Calculate Magnetic Local Time
