@@ -89,15 +89,15 @@ end
 function AstAlg_jde,year,month,day
 
   if (month le 2) then begin
-    year=year-1
-    month=month+12
+    julyear=year-1
+    julmonth=month+12
   endif
 
-  a=fix(year/100.0D)
+  a=fix(julyear/100.0D)
   b=double(2-a + a/4)
 
-  return, double( long(365.25D*(year+4716.0D)) + $
-                 double(long(30.6001D*(month+1.0D)))) + day+b-1524.5D
+  return, double( long(365.25D*(julyear+4716.0D)) + $
+                 double(long(30.6001D*(julmonth+1.0D)))) + day+b-1524.5D
  
 end
 
