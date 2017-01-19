@@ -43,7 +43,7 @@ double more_badlags(double *w,int *badlag,
   badflag_2 = 0;
 
   fluct0 =  w[0]/sqrt(2.0*(double) nave);
-  fluct =  w[0] + 2.0*noise_lev+fluct0; 
+  fluct =  w[0] + 2.0*noise_lev+fluct0;
   fluct_old = fluct;
   sum_np = 0;
   k_old = 0;
