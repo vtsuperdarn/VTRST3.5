@@ -176,6 +176,8 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
     nptr->lag0=0.0;
     nptr->vel=0.0;
 
+    fprintf(stderr,"In do_fit.c file\n");
+
     if (iptr->prm.nave <= 1) return 0;
 
     freq_to_vel = C/(4*PI)/(iptr->prm.tfreq * 1000.0);
@@ -203,12 +205,18 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
         return -1;
     }
 
-    if (iptr->prm.channel==0) FitACFBadlags(&iptr->prm,&badsmp);
-    else FitACFBadlagsStereo(&iptr->prm,&badsmp);
+/*    fprintf(stderr, "iptr->prm.channel:  %d\n", iptr->prm.channel); */
+    if (iptr->prm.channel==0){
+        FitACFBadlags(&iptr->prm,&badsmp);
+    } else {
+        fprintf(stderr, "Using FitACFBadlagsStereo\n");
+        FitACFBadlagsStereo(&iptr->prm,&badsmp);
+    }
 
 
     mnpwr = 0.0;
     s = calc_skynoise(iptr, nptr, &mnpwr, pwrd, pwrt);
+    fprintf(stderr, "Calc'ed sky noise?\n");
     /* How is s ever not zero since zero is returned from the function? -KTS 20150430 */
     if (s == -1){
 	/* Should the badlag, pwrd, and pwrt allocations be freed here? -KTS 20150430 */
@@ -229,14 +237,16 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
 
     /* ----------------------------------------------------------------------*/
     /*  Now do the fits for each acf */
-
+    fprintf(stderr, "About to loop through ranges for fitting\n");
     for (k=0, i=0; k<iptr->prm.nrang;k++) {
 
         ptr[k].qflg = fit_acf(&iptr->acfd[k*iptr->prm.mplgs], k+1,
                                 &badlag[k*iptr->prm.mplgs],&badsmp,
                                 lag_lim,&iptr->prm,noise_pwr,0,0.0,&ptr[k]);
         xomega=ptr[k].v;
+        fprintf(stderr,"Quality flag: %d\n", ptr[k].qflg);
         if (ptr[k].qflg == 1)   {
+            fprintf(stderr, "Good qflgs here?\n");
             /* several changes have been made here to
              fix an apparent problem in handling HUGE_VAL.
 

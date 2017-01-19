@@ -71,6 +71,8 @@ int fit_acf (struct complex *acf,int range,
 
     /* ----------------End of declarations ----------------------------------*/
 
+    fprintf(stderr,"In fit_acf.c file\n");
+
     /*if the lag 0 power is less than the noise level,
         then assign label 3 to badlag and return zeros in the
         fitrange object*/
@@ -172,6 +174,9 @@ int fit_acf (struct complex *acf,int range,
 
     /*  We must have at least lag_lim good lags */
     if (sum_np < lag_lim) {
+        fprintf(stderr,"No good lag_lims?\n");
+        fprintf(stderr,"sum_np:    %d\n", sum_np);
+        fprintf(stderr,"lag_lim:   %d\n", lag_lim);
         free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2,
                     &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);
         return 4;
