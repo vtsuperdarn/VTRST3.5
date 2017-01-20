@@ -42,6 +42,8 @@ double more_badlags(double *w,int *badlag,
     badflag_1 = 0;
     badflag_2 = 0;
 
+    fprintf(stderr,"In more_badlags.c\n");
+
     fluct0 =  w[0]/sqrt(2.0*(double) nave);
     fluct =  w[0] + 2.0*noise_lev+fluct0;
     fluct_old = fluct;
@@ -49,13 +51,17 @@ double more_badlags(double *w,int *badlag,
     k_old = 0;
 
     for (k=0; k<mplgs; k++) {
+        fprintf(stderr, "top badlag[k]:  %d\n",badlag[k]);
         if (badlag[k]) continue;
+        fprintf(stderr,"More badlags loop step 1\n");
         if (badflag_2) badlag[k]=7;
         else if (w[k] <= w[0]/sqrt((double) nave)) {  /* if (w[k] <= 1.0) { */
+            fprintf(stderr,"More badlags loop step 2\n");
    	        badlag[k] = 3;
    	        badflag_2 = badflag_1;
    	        badflag_1 = 1;
         } else {
+            fprintf(stderr, "more badlags loop step 3\n");
             badflag_1 = 0;
    	        if (w[k] > fluct) {
 	            badlag[k] = 5;
@@ -70,6 +76,7 @@ double more_badlags(double *w,int *badlag,
             fluct_old = fluct;
             fluct = 2.0*noise_lev + w[k] + fluct0;
         }
+        fprintf("badlag[k]:    %d\n", badlag[k]);
         if (!badlag[k]) {
             ++sum_np;
 	        k_old = k;
