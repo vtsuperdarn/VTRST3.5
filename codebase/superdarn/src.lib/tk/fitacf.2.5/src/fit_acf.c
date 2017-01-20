@@ -169,13 +169,13 @@ int fit_acf (struct complex *acf,int range,
 
     /*  identify any additional bad lags */
     sum_np = more_badlags(w, badlag, noise_lev, prm->mplgs,prm->nave);
+    fprintf(stderr,"sum_np:    %d\n", sum_np);
 
     ptr->nump = (char) sum_np;
 
     /*  We must have at least lag_lim good lags */
     if (sum_np < lag_lim) {
         fprintf(stderr,"No good lag_lims?\n");
-        fprintf(stderr,"sum_np:    %d\n", sum_np);
         fprintf(stderr,"lag_lim:   %d\n", lag_lim);
         free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2,
                     &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);

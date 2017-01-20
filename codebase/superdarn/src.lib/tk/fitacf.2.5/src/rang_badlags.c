@@ -114,8 +114,10 @@ void lag_overlap(int range,int *badlag,struct FitPrm *ptr) {
   for (pulse = 0 ; pulse < ptr->mppul; ++pulse) {
     if (bad_pulse[pulse] == 1) {
       for (i=0; i < 2 ; ++i) {
+        fprintf(stderr,"number of mplgs:  %d\n", ptr->mplgs);
         for (lag = 0 ; lag < ptr->mplgs ; ++lag) {
           if (ptr->lag[i][lag] == ptr->pulse[pulse])
+            fprintf(stderr, "marking badlag 1 in rang_badlags.c.  Lag:  %d\n", lag);
             badlag[lag] = 1;  /* 1 for bad lag */
         }
       }

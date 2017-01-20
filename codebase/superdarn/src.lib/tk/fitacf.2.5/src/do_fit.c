@@ -189,6 +189,11 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
 	 return -1;
     }
 
+    fprintf(stderr,"badlag[0]: %d\n", badlag[0]);
+    fprintf(stderr,"badlag[1]: %d\n", badlag[1]);
+    fprintf(stderr,"badlag[2]: %d\n", badlag[2]);
+    fprintf(stderr,"badlag[3]: %d\n", badlag[3]);
+
     pwrd=malloc(sizeof(double)*iptr->prm.nrang);
 /*    pwrd=malloc(sizeof(double)*800); */
     if (pwrd==NULL) {
@@ -212,7 +217,6 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
         fprintf(stderr, "Using FitACFBadlagsStereo\n");
         FitACFBadlagsStereo(&iptr->prm,&badsmp);
     }
-
 
     mnpwr = 0.0;
     s = calc_skynoise(iptr, nptr, &mnpwr, pwrd, pwrt);
