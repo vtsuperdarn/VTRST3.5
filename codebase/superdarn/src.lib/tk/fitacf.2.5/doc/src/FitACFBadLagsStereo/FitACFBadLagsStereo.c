@@ -28,7 +28,7 @@ struct RadarParm prm;
 struct RawData raw;
 struct FitBlock fblk;
 
-struct RadarNetwork *network;  
+struct RadarNetwork *network;
 struct Radar *radar;
 struct RadarSite *site;
 
@@ -36,11 +36,11 @@ struct RadarSite *site;
 struct FitACFBadSample bsamp;
 
 int main(int argc,char *argv[]) {
- 
+
   FILE *fp;
   char *envstr;
   int s,i,j,n;
- 
+
   envstr=getenv("SD_RADAR");
   if (envstr==NULL) {
     fprintf(stderr,"Environment variable 'SD_RADAR' must be defined.\n");
@@ -55,7 +55,7 @@ int main(int argc,char *argv[]) {
   }
 
   network=RadarLoad(fp);
-  fclose(fp); 
+  fclose(fp);
   if (network==NULL) {
     fprintf(stderr,"Failed to read radar information.\n");
     exit(-1);
@@ -82,7 +82,7 @@ int main(int argc,char *argv[]) {
      fprintf(stderr,"Error reading file.\n");
     exit(-1);
   }
-    
+
   radar=RadarGetRadar(network,prm.stid);
   if (radar==NULL) {
     fprintf(stderr,"Failed to get radar information.\n");
@@ -98,14 +98,14 @@ int main(int argc,char *argv[]) {
     exit(-1);
   }
 
-  FitACFStart(site,prm.time.yr,&fblk); 
+  FitACFStart(site,prm.time.yr,&fblk);
 
   do {
     fprintf(stdout,"%.4d-%.2d-%.2d %.2d:%.2d:%.2d\n",
              prm.time.yr,prm.time.mo,prm.time.dy,
              prm.time.hr,prm.time.mt,prm.time.sc);
 
-    
+
     fblk.prm.xcf=prm.xcf;
     fblk.prm.tfreq=prm.tfreq;
     fblk.prm.noise=prm.noise.search;
@@ -130,7 +130,7 @@ int main(int argc,char *argv[]) {
 
     for (i=0;i<fblk.prm.nrang;i++) {
       fblk.prm.pwr0[i]=raw.pwr0[i];
-   
+
       for (j=0;j<fblk.prm.mplgs;j++) {
         fblk.acfd[i][j].x=raw.acfd[i][j][0];
         fblk.acfd[i][j].y=raw.acfd[i][j][1];
@@ -140,8 +140,8 @@ int main(int argc,char *argv[]) {
           fblk.xcfd[i][j].x=raw.xcfd[i][j][0];
           fblk.xcfd[i][j].y=raw.xcfd[i][j][1];
         }
-      } 
-    }   
+      }
+    }
 
 /*    if (prm.channel !=0) FitACFBadlagsStereo(&fblk.prm,&bsamp); */
     if (prm.offset !=0) FitACFBadlagsStereo(&fblk.prm,&bsamp);
@@ -154,7 +154,7 @@ int main(int argc,char *argv[]) {
 
 
   } while (s !=-1);
- 
+
   fclose(fp);
 
 
