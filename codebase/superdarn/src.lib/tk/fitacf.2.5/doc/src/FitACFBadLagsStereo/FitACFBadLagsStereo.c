@@ -3,6 +3,9 @@
    Author: R.J.Barnes */
 
 
+/* THIS CODE DOES NOT REFLECT WORKING CODE AS IT IS NOT IN THE */
+/* FITACF LIBRARY SOURCE DIRECTORY */
+
 
 
 #include <stdio.h>
