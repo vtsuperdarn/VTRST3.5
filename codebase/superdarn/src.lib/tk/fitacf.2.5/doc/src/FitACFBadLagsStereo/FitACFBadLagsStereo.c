@@ -3,6 +3,8 @@
    Author: R.J.Barnes */
 
 
+
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -141,7 +143,8 @@ int main(int argc,char *argv[]) {
       } 
     }   
 
-    if (prm.channel !=0) FitACFBadlagsStereo(&fblk.prm,&bsamp);
+/*    if (prm.channel !=0) FitACFBadlagsStereo(&fblk.prm,&bsamp); */
+    if (prm.offset !=0) FitACFBadlagsStereo(&fblk.prm,&bsamp);
     else FitACFBadlags(&fblk.prm,&bsamp);
 
     fprintf(stdout,"%d:",bsamp.nbad);
