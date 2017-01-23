@@ -53,6 +53,8 @@ int fit_acf (struct complex *acf,int range,
                 double noise_lev_in,char xflag,double xomega,
                 struct FitRange *ptr) {
 
+    int lag;
+
     double sum_np,sum_w,sum_wk,sum_wk2,*sum_wk2_arr=NULL,sum_wk4,
             sum_p,sum_pk,sum_pk2,sum_phi,sum_kphi, t0,t2,t4,*phi_res=NULL;
     int j, npp, s = 0, last_good, status, *bad_pwr = NULL;
@@ -93,8 +95,18 @@ int fit_acf (struct complex *acf,int range,
         return -1;
     }
 
+    for (lag = 0 ; lag < prm->mplgs ; ++lag) {
+        fprintf(stderr, "badlag[%i]:     %g\n",lag, badlag[lag]);
+    }
+
+
     /* initialize the table of abs(acf[k]) and log(abs(acf[k])) */
     FitACFCkRng(range, badlag, badsmp, prm);
+    fprintf(stderr,"After FitACFCkRng \n");
+    for (lag = 0 ; lag < prm->mplgs ; ++lag) {
+        fprintf(stderr, "badlag[%i]:     %i\n",lag, badlag[lag]);
+    }
+
 
     /* Save the original ACF in a new variable so we can try some
          preprocessing on it.
@@ -170,8 +182,17 @@ int fit_acf (struct complex *acf,int range,
     /*  identify any additional bad lags */
     sum_np = more_badlags(w, badlag, noise_lev, prm->mplgs,prm->nave);
     fprintf(stderr,"sum_np:    %.0f\n", sum_np);
+    for (lag = 0 ; lag < prm->mplgs ; ++lag) {
+        j = badlag[lag];
+        fprintf(stderr, "badlag[%i]:     %i\n",lag, j);
+    }
 
     ptr->nump = (char) sum_np;
+    /* Throw a debug message if we ever get a non-zero sum_np out! */
+    if (sum_np > 0 ) {
+        fprintf(stderr, "NON ZERO SUM NP!\n");
+    }
+
 
     /*  We must have at least lag_lim good lags */
     if (sum_np < lag_lim) {
