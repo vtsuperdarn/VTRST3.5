@@ -49,9 +49,9 @@ double more_badlags(double *w,int *badlag,
     k_old = 0;
 
     for (k=0; k<mplgs; k++) {
-        fprintf(stderr, "top badlag[k]:  %d\n",badlag[k]);
+/*        fprintf(stderr, "top badlag[k]:  %d\n",badlag[k]); */
         if (badlag[k]){
-            fprintf(stderr, "Found badlag, continuing on now.  k: %d\n", k);
+/*            fprintf(stderr, "Found badlag, continuing on now.  k: %d\n", k); */
             continue;
         }
         fprintf(stderr,"More badlags loop step 1\n");
