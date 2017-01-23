@@ -169,7 +169,7 @@ int fit_acf (struct complex *acf,int range,
 
     /*  identify any additional bad lags */
     sum_np = more_badlags(w, badlag, noise_lev, prm->mplgs,prm->nave);
-    fprintf(stderr,"sum_np:    %d\n", sum_np);
+    fprintf(stderr,"sum_np:    %.0f\n", sum_np);
 
     ptr->nump = (char) sum_np;
 
