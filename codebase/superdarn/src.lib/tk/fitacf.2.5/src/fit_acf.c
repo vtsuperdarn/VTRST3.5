@@ -73,7 +73,7 @@ int fit_acf (struct complex *acf,int range,
 
     /* ----------------End of declarations ----------------------------------*/
 
-    fprintf(stderr,"In fit_acf.c file\n");
+/*    fprintf(stderr,"In fit_acf.c file\n"); */
 
     /*if the lag 0 power is less than the noise level,
         then assign label 3 to badlag and return zeros in the
@@ -95,18 +95,18 @@ int fit_acf (struct complex *acf,int range,
         return -1;
     }
 
-    for (lag = 0 ; lag < prm->mplgs ; ++lag) {
+/*    for (lag = 0 ; lag < prm->mplgs ; ++lag) {
         fprintf(stderr, "badlag[%i]:     %g\n",lag, badlag[lag]);
     }
-
+*/
 
     /* initialize the table of abs(acf[k]) and log(abs(acf[k])) */
     FitACFCkRng(range, badlag, badsmp, prm);
-    fprintf(stderr,"After FitACFCkRng \n");
+/*    fprintf(stderr,"After FitACFCkRng \n");
     for (lag = 0 ; lag < prm->mplgs ; ++lag) {
         fprintf(stderr, "badlag[%i]:     %i\n",lag, badlag[lag]);
     }
-
+*/
 
     /* Save the original ACF in a new variable so we can try some
          preprocessing on it.
@@ -181,23 +181,23 @@ int fit_acf (struct complex *acf,int range,
 
     /*  identify any additional bad lags */
     sum_np = more_badlags(w, badlag, noise_lev, prm->mplgs,prm->nave);
-    fprintf(stderr,"sum_np:    %.0f\n", sum_np);
-    for (lag = 0 ; lag < prm->mplgs ; ++lag) {
+/*    fprintf(stderr,"sum_np:    %.0f\n", sum_np); */
+/*    for (lag = 0 ; lag < prm->mplgs ; ++lag) {
         j = badlag[lag];
         fprintf(stderr, "badlag[%i]:     %i\n",lag, j);
     }
-
+*/
     ptr->nump = (char) sum_np;
     /* Throw a debug message if we ever get a non-zero sum_np out! */
-    if (sum_np > 0 ) {
+/*    if (sum_np > 0 ) {
         fprintf(stderr, "NON ZERO SUM NP!\n");
     }
-
+*/
 
     /*  We must have at least lag_lim good lags */
     if (sum_np < lag_lim) {
-        fprintf(stderr,"No good lag_lims?\n");
-        fprintf(stderr,"lag_lim:   %d\n", lag_lim);
+/*        fprintf(stderr,"No good lag_lims?\n");
+        fprintf(stderr,"lag_lim:   %d\n", lag_lim); */
         free_arrays(&sum_wk2_arr, &phi_res, &tau, &tau2,
                     &phi_k, &w, &pwr, &wt, &wt2, &wp, &bad_pwr);
         return 4;

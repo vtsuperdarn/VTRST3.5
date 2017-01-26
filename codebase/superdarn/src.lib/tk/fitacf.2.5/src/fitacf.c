@@ -173,7 +173,7 @@ int FitACF(struct RadarParm *prm, struct RawData *raw,struct FitBlock *input, st
         input->prm.old=1;
     }
 
-    fprintf(stderr,"In FitACF library\n");
+/*    fprintf(stderr,"In FitACF library\n"); */
 
     fit->revision.major=FITACF_MAJOR_REVISION;
     fit->revision.minor=FITACF_MINOR_REVISION;

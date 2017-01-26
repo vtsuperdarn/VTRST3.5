@@ -103,7 +103,7 @@ return;
 void FitACFCkRng(int range,int *badlag,struct FitACFBadSample *bptr,
 	       struct FitPrm *ptr) {
   int sam1, sam2, i, j;
-  fprintf(stderr, "FitACFCkRng Checking ranges\n");
+/*  fprintf(stderr, "FitACFCkRng Checking ranges\n");  */
   for (i=0; i<ptr->mplgs; i++) {
 	badlag[i] = 0;
 	sam1 = ptr->lag[0][i]*(ptr->mpinc/ptr->smsep)
@@ -119,9 +119,10 @@ void FitACFCkRng(int range,int *badlag,struct FitACFBadSample *bptr,
     }
   }
 
-  for (i=0;i < ptr->mplgs; i++) {
+/*  for (i=0;i < ptr->mplgs; i++) {
     fprintf(stderr,"badlag[%i]: \t%i\n",i, badlag[i]);
   }
+*/
   /* This section of code is only of use to fitacf for reprocessing old
 	data that used the 16 lag, 7 pulse code.  */
 
@@ -130,9 +131,10 @@ void FitACFCkRng(int range,int *badlag,struct FitACFBadSample *bptr,
 
   /* finally, check for range interference */
   lag_overlap(range, badlag, ptr);
-  fprintf(stderr,"After lag_overlap\n");
+/*  fprintf(stderr,"After lag_overlap\n");
   for (i=0;i < ptr->mplgs; i++) {
     fprintf(stderr,"badlag[%i]: \t%i\n",i, badlag[i]);
   }
+*/
   return;
 }
