@@ -134,13 +134,14 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
     offset=ptr->offset;
     if (ptr->channel==1) offset=-offset;
 
-    if (offset==0){
+/*    if (offset==0){
         fprintf(stderr, "badlags_s: offset set to zero while trying to use stereo processing\n");
         return;
     }
+*/
 
-
-    while ( offset != 0 && i < (ptr->mppul - 1) && k < maxbad ) {
+/*    while ( offset != 0 && i < (ptr->mppul - 1) && k < maxbad ) {  */
+    while ( i < (ptr->mppul - 1) && k < maxbad ) {
     /* first, skip over any pulses that occur before the first sample */
 
     while ((ts > t2) && (i < (ptr->mppul - 1))) {
