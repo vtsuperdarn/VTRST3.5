@@ -135,7 +135,7 @@ void FitACFBadlagsStereo(struct FitPrm *ptr, struct FitACFBadSample *bptr) {
     if (ptr->channel==1) offset=-offset;
 
     if (offset==0){
-        fprintf(stderr, "badlags_s: offset set to zero while trying to use stereo processing\n");
+/*        fprintf(stderr, "badlags_s: offset set to zero while trying to use stereo processing\n"); */
         return;
     }
 
