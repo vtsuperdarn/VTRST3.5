@@ -206,8 +206,8 @@ int do_fit(struct FitBlock *iptr,int lag_lim,int goose,
     }
 
 /*    fprintf(stderr, "iptr->prm.channel:  %d\n", iptr->prm.channel); */
-    if (iptr->prm.channel==0){
-/*    if (iptr->prm.offset==0){ */
+/*    if (iptr->prm.channel==0){ */
+    if (iptr->prm.offset==0){
         FitACFBadlags(&iptr->prm,&badsmp);
     } else {
 /*        fprintf(stderr, "Using FitACFBadlagsStereo\n"); */
